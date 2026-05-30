@@ -268,10 +268,10 @@
 
   <form id="assetForm">
     <div class="form-grid">
-      <div class="form-group"><label>Code</label><input type="text" id="code"></div>
-      <div class="form-group"><label>Asset Class</label><input type="text" id="assetClass"></div>
+      <div class="form-group"><label>Code</label><select id="code"><option value="">Select Code</option><option>73803</option><option>73802</option><option>73801</option><option>73800</option></select></div>
+      <div class="form-group"><label>Asset Class</label><select id="assetClass"><option value="">Select Asset Class</option><option>Admin</option><option>Bowser</option><option>Drilling</option><option>Executive</option><option>Projects &amp; Tender</option><option>Small Plant</option><option>Trailers</option><option>Trucks</option><option>Yellow Plant</option></select></div>
       <div class="form-group"><label>Purchase Date</label><input type="date" id="purchaseDate"></div>
-      <div class="form-group"><label>Purchased by</label><input type="text" id="purchasedBy"></div>
+      <div class="form-group"><label>Purchased by</label><select id="purchasedBy"><option value="">Select Purchased By</option><option>Onpoint</option><option>Aqua Telecoms</option><option>Nkanyezi</option><option>Distinct</option></select></div>
       <div class="form-group"><label>Financing</label><input type="text" id="financing"></div>
       <div class="form-group"><label>Description</label><input type="text" id="description"></div>
       <div class="form-group"><label>Model</label><select id="model"><option value="">Select Model Year</option>
@@ -322,6 +322,7 @@
           <option value="2044">2044</option>
           <option value="2045">2045</option>
         </select></div>
+      <div class="form-group"><label>Make of Vehicle</label><select id="makeOfVehicle"><option value="">Select Make of Vehicle</option><option>Toyota</option><option>Faw</option><option>Ford</option><option>Foton</option><option>Mahindra</option><option>Issuzu</option><option>Mercedes Benz</option><option>VW</option><option>Nissan</option></select></div>
       <div class="form-group"><label>Body Type</label><select id="bodyType"><option value="">Select Body Type</option><option>Sedan</option><option>Hatchback</option><option>Truck</option><option>Minibus</option><option>SUV</option><option>Bukkie</option><option>Lorry</option></select></div>
       <div class="form-group"><label>Registration no</label><input type="text" id="registrationNo"></div>
       <div class="form-group"><label>Engine no</label><input type="text" id="engineNo"></div>
@@ -406,20 +407,48 @@
   <div class="status" id="status"></div>
 
   <div class="table-wrap">
+    <h2 style="color:var(--primary-blue);margin-top:28px;margin-bottom:10px;">Transaction Journal</h2>
     <table id="assetTable">
       <thead>
         <tr>
           <th>Code</th>
           <th>Asset Class</th>
+          <th>Purchase Date</th>
+          <th>Purchased by</th>
+          <th>Financing</th>
+          <th>Description</th>
+          <th>Model</th>
+          <th>Make of Vehicle</th>
+          <th>Body Type</th>
           <th>Registration no</th>
           <th>Engine no</th>
           <th>Vin no</th>
-          <th>Model</th>
-          <th>Body Type</th>
-          <th>Driver/Operator</th>
-          <th>Allocation/Dept</th>
           <th>Cost</th>
           <th>Market Value</th>
+          <th>ZOHO</th>
+          <th>Location</th>
+          <th>Driver/Operator</th>
+          <th>Licenced</th>
+          <th>Type of Licence</th>
+          <th>Validity of Licence</th>
+          <th>Allocation/Dept</th>
+          <th>Registered Entity</th>
+          <th>Covered by</th>
+          <th>TRACKING COMPANY</th>
+          <th>Installment Amount</th>
+          <th>Last Installment date</th>
+          <th>eTag Toll</th>
+          <th>NOTES</th>
+          <th>Reg. Boo</th>
+          <th>Useful life</th>
+          <th>Recharge</th>
+          <th>Monthly dpn</th>
+          <th>Year</th>
+          <th>Months Dpn</th>
+          <th>Accum dpn</th>
+          <th>NBV</th>
+          <th>Oustanding VAF</th>
+          <th>Value</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -428,11 +457,11 @@
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxBd5q_0l5krjYe5fCxhY3xl8J664W3OgHzPuSafzDblLMLAnNgiKSYnP9xRZeAP9JqNg/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx9bU3MnQWGXLOsJiAP0BMRcJm--mwY01sv9g65euOzH8ZKXHuolDs8rXSPpcZVkAe2ZA/exec";
 
 const FIELD_IDS = [
   "code", "assetClass", "purchaseDate", "purchasedBy", "financing", "description",
-  "model", "bodyType", "registrationNo", "engineNo", "vinNo", "cost", "marketValue",
+  "model", "makeOfVehicle", "bodyType", "registrationNo", "engineNo", "vinNo", "cost", "marketValue",
   "zoho", "location", "driverOperator", "licenced", "typeOfLicence", "validityOfLicence",
   "allocationDept", "registeredEntity", "coveredBy", "trackingCompany", "installmentAmount",
   "lastInstallmentDate", "eTagToll", "notes", "regBoo", "usefulLife", "recharge",
@@ -464,25 +493,45 @@ document.getElementById("assetForm").addEventListener("submit", function(e){
   });
 });
 
+function valueOrBlank(value){
+  return value === undefined || value === null ? "" : value;
+}
+
 function addToTable(data){
   const tbody = document.querySelector("#assetTable tbody");
-  const row = `
-    <tr>
-      <td>${data.code || ""}</td>
-      <td>${data.assetClass || ""}</td>
-      <td>${data.registrationNo || ""}</td>
-      <td>${data.engineNo || ""}</td>
-      <td>${data.vinNo || ""}</td>
-      <td>${data.model || ""}</td>
-      <td>${data.bodyType || ""}</td>
-      <td>${data.driverOperator || ""}</td>
-      <td>${data.allocationDept || ""}</td>
-      <td>${data.cost || ""}</td>
-      <td>${data.marketValue || ""}</td>
-    </tr>
-  `;
+  const fields = [
+    "code", "assetClass", "purchaseDate", "purchasedBy", "financing", "description",
+    "model", "makeOfVehicle", "bodyType", "registrationNo", "engineNo", "vinNo", "cost",
+    "marketValue", "zoho", "location", "driverOperator", "licenced", "typeOfLicence",
+    "validityOfLicence", "allocationDept", "registeredEntity", "coveredBy",
+    "trackingCompany", "installmentAmount", "lastInstallmentDate", "eTagToll", "notes",
+    "regBoo", "usefulLife", "recharge", "monthlyDpn", "year", "monthsDpn", "accumDpn",
+    "nbv", "oustandingVaf", "value"
+  ];
+
+  const row = `<tr>${fields.map(field => `<td>${valueOrBlank(data[field])}</td>`).join("")}</tr>`;
   tbody.innerHTML += row;
 }
+
+function loadAssets(){
+  fetch(`${SCRIPT_URL}?action=list`)
+    .then(res => res.json())
+    .then(rows => {
+      const tbody = document.querySelector("#assetTable tbody");
+      tbody.innerHTML = "";
+      if (!Array.isArray(rows) || !rows.length) {
+        tbody.innerHTML = `<tr><td colspan="38">No transaction journal entries found.</td></tr>`;
+        return;
+      }
+      rows.forEach(addToTable);
+    })
+    .catch(err => {
+      console.error(err);
+      document.getElementById("status").innerHTML = "Could not load transaction journal from Google Sheet";
+    });
+}
+
+document.addEventListener("DOMContentLoaded", loadAssets);
 </script>
 </body>
 </html>

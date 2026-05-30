@@ -4,8 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Distinct Infrastructure - Asset Register</title>
-
   <style>
+    :root{
+      --primary-blue:#0b2f6b;
+      --deep-blue:#071f47;
+      --bright-blue:#1464d2;
+      --soft-blue:#eaf3ff;
+      --gold:#d4af37;
+      --gold-light:#ffe7a3;
+      --gold-deep:#9a7416;
+      --white:#ffffff;
+      --text:#12304f;
+      --muted:#6b7a90;
+      --line:rgba(20,68,126,0.16);
+      --shadow:0 20px 60px rgba(7,31,71,0.18);
+    }
+
     *{
       margin:0;
       padding:0;
@@ -14,113 +28,238 @@
     }
 
     body{
-      background:#f4f6f9;
-      padding:20px;
+      min-height:100vh;
+      background:
+        radial-gradient(circle at top left, rgba(212,175,55,0.32), transparent 30%),
+        linear-gradient(135deg, var(--deep-blue) 0%, var(--primary-blue) 45%, var(--bright-blue) 100%);
+      padding:24px;
+      color:var(--text);
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:-30%;
+      background:linear-gradient(120deg, transparent, rgba(255,255,255,0.12), transparent);
+      animation:shine 8s linear infinite;
+      pointer-events:none;
+    }
+
+    @keyframes shine{
+      0%{transform:translateX(-40%) rotate(10deg)}
+      100%{transform:translateX(40%) rotate(10deg)}
     }
 
     .container{
+      position:relative;
       max-width:1400px;
       margin:auto;
-      background:#fff;
-      padding:25px;
-      border-radius:10px;
-      box-shadow:0 2px 10px rgba(0,0,0,0.1);
+      background:rgba(255,255,255,0.96);
+      padding:28px;
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,0.5);
+      animation:pageIn 0.75s ease both;
+    }
+
+    @keyframes pageIn{
+      from{opacity:0; transform:translateY(18px)}
+      to{opacity:1; transform:translateY(0)}
     }
 
     .header{
       text-align:center;
-      margin-bottom:25px;
+      margin-bottom:28px;
+      padding:28px 20px;
+      border-radius:22px;
+      background:linear-gradient(135deg, var(--primary-blue), var(--bright-blue));
+      color:white;
+      box-shadow:0 14px 35px rgba(11,47,107,0.28);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .header::after{
+      content:"";
+      position:absolute;
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background:rgba(212,175,55,0.25);
+      right:-50px;
+      top:-70px;
+      animation:floatOrb 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatOrb{
+      from{transform:translateY(0) scale(1)}
+      to{transform:translateY(22px) scale(1.08)}
     }
 
     .header h1{
-      color:#1f4e78;
-      margin-bottom:5px;
+      color:white;
+      margin-bottom:8px;
+      font-size:clamp(26px, 4vw, 42px);
+      letter-spacing:0.5px;
     }
 
     .header p{
-      color:#666;
+      color:#eef6ff;
       font-size:14px;
+      line-height:1.5;
+      position:relative;
+      z-index:1;
     }
+
+    .header strong{ color:var(--gold-light); }
 
     .form-grid{
       display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap:15px;
-      margin-bottom:20px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap:16px;
+      margin-bottom:22px;
     }
 
     .form-group{
       display:flex;
       flex-direction:column;
+      padding:14px;
+      background:linear-gradient(180deg, #ffffff, var(--soft-blue));
+      border:1px solid var(--line);
+      border-radius:18px;
+      transition:transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+      animation:cardIn 0.45s ease both;
+    }
+
+    .form-group:hover{
+      transform:translateY(-3px);
+      box-shadow:0 14px 28px rgba(11,47,107,0.12);
+      border-color:rgba(212,175,55,0.7);
+    }
+
+    @keyframes cardIn{
+      from{opacity:0; transform:translateY(10px)}
+      to{opacity:1; transform:translateY(0)}
     }
 
     label{
-      margin-bottom:5px;
+      margin-bottom:7px;
       font-weight:bold;
-      color:#333;
-      font-size:14px;
+      color:var(--primary-blue);
+      font-size:13px;
     }
 
-    input, select{
-      padding:10px;
-      border:1px solid #ccc;
-      border-radius:5px;
+    input, select, textarea{
+      width:100%;
+      padding:12px 13px;
+      border:1px solid rgba(11,47,107,0.22);
+      border-radius:12px;
       font-size:14px;
+      background:white;
+      color:var(--text);
+      transition:border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
     }
+
+    input:focus, select:focus, textarea:focus{
+      outline:none;
+      border-color:var(--gold);
+      box-shadow:0 0 0 4px rgba(212,175,55,0.2);
+      transform:translateY(-1px);
+    }
+
+    textarea{ min-height:44px; resize:vertical; }
 
     button{
-      background:#1f4e78;
-      color:#fff;
+      background:linear-gradient(135deg, var(--gold), var(--gold-deep));
+      color:#071f47;
       border:none;
-      padding:12px 25px;
-      border-radius:5px;
+      padding:14px 30px;
+      border-radius:999px;
       cursor:pointer;
       font-size:15px;
-      margin-top:20px;
+      font-weight:800;
+      margin-top:10px;
+      box-shadow:0 12px 26px rgba(154,116,22,0.28);
+      transition:transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
     }
 
     button:hover{
-      background:#163954;
+      transform:translateY(-3px);
+      box-shadow:0 18px 34px rgba(154,116,22,0.36);
+      filter:saturate(1.1);
+    }
+
+    .status{
+      margin-top:16px;
+      font-weight:bold;
+      color:var(--primary-blue);
+      background:rgba(212,175,55,0.16);
+      border-left:5px solid var(--gold);
+      padding:12px 14px;
+      border-radius:12px;
+      min-height:20px;
+    }
+
+    .table-wrap{
+      width:100%;
+      overflow-x:auto;
+      border-radius:18px;
+      border:1px solid var(--line);
+      margin-top:28px;
+      box-shadow:0 10px 24px rgba(11,47,107,0.08);
     }
 
     table{
       width:100%;
+      min-width:980px;
       border-collapse:collapse;
-      margin-top:30px;
-      overflow-x:auto;
+      background:white;
     }
 
     th{
-      background:#1f4e78;
+      background:linear-gradient(135deg, var(--primary-blue), var(--bright-blue));
       color:white;
-      padding:12px;
+      padding:13px;
       text-align:left;
       font-size:13px;
+      white-space:nowrap;
+      border-bottom:3px solid var(--gold);
     }
 
     td{
-      padding:10px;
-      border-bottom:1px solid #ddd;
+      padding:11px 13px;
+      border-bottom:1px solid var(--line);
       font-size:13px;
+      color:var(--text);
+      white-space:nowrap;
     }
 
-    tr:hover{
-      background:#f1f1f1;
+    tr{ transition:background 0.2s ease; }
+    tr:hover{ background:#f4f8ff; }
+
+    @media (max-width: 768px){
+      body{ padding:12px; }
+      .container{ padding:16px; border-radius:20px; }
+      .header{ padding:24px 14px; }
+      .form-grid{ grid-template-columns:1fr; gap:12px; }
+      .form-group{ padding:12px; }
+      button{ width:100%; }
+      .table-wrap{ margin-top:20px; }
+      table{ min-width:900px; }
     }
 
-    .status{
-      margin-top:15px;
-      font-weight:bold;
-      color:green;
+    @media (prefers-reduced-motion: reduce){
+      *, *::before, *::after{
+        animation-duration:0.01ms !important;
+        animation-iteration-count:1 !important;
+        scroll-behavior:auto !important;
+      }
     }
-
   </style>
 </head>
-
 <body>
-
 <div class="container">
-
   <div class="header">
     <h1>Distinct Infrastructure</h1>
     <p>Vehicle & Asset Register Management System</p>
@@ -128,81 +267,14 @@
   </div>
 
   <form id="assetForm">
-
     <div class="form-grid">
-
-      <div class="form-group">
-        <label>Asset ID</label>
-        <input type="text" id="assetId">
-      </div>
-
-      <div class="form-group">
-        <label>Vehicle Registration</label>
-        <input type="text" id="registration">
-      </div>
-
-      <div class="form-group">
-        <label>Engine Number</label>
-        <input type="text" id="engineNumber">
-      </div>
-
-      <div class="form-group">
-        <label>VIN Number</label>
-        <input type="text" id="vinNumber">
-      </div>
-
-      <div class="form-group">
-        <label>Purchase Date</label>
-        <input type="date" id="purchaseDate">
-      </div>
-
-      <div class="form-group">
-        <label>Purchased By</label>
-        <input type="text" id="purchasedBy">
-      </div>
-
-      <div class="form-group">
-        <label>Description</label>
-        <input type="text" id="description">
-      </div>
-
-      <div class="form-group">
-        <label>Body Type</label>
-        <select id="bodyType">
-          <option value="">Select Body Type</option>
-          <option value="Sedan">Sedan</option>
-          <option value="Hatchback">Hatchback</option>
-          <option value="Truck">Truck</option>
-          <option value="Minibus">Minibus</option>
-          <option value="SUV">SUV</option>
-          <option value="Bukkie">Bukkie</option>
-          <option value="Lorry">Lorry</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Engine Capacity</label>
-        <input type="text" id="engine">
-      </div>
-
-      <div class="form-group">
-        <label>Make</label>
-        <select id="make">
-          <option value="">Select Make</option>
-          <option value="Toyota">Toyota</option>
-          <option value="Ford">Ford</option>
-          <option value="Foton">Foton</option>
-          <option value="Mahindra">Mahindra</option>
-          <option value="Issuzu">Issuzu</option>
-          <option value="Mercedes Benz">Mercedes Benz</option>
-          <option value="Nissan">Nissan</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Model</label>
-        <select id="model">
-          <option value="">Select Model Year</option>
+      <div class="form-group"><label>Code</label><input type="text" id="code"></div>
+      <div class="form-group"><label>Asset Class</label><input type="text" id="assetClass"></div>
+      <div class="form-group"><label>Purchase Date</label><input type="date" id="purchaseDate"></div>
+      <div class="form-group"><label>Purchased by</label><input type="text" id="purchasedBy"></div>
+      <div class="form-group"><label>Financing</label><input type="text" id="financing"></div>
+      <div class="form-group"><label>Description</label><input type="text" id="description"></div>
+      <div class="form-group"><label>Model</label><select id="model"><option value="">Select Model Year</option>
           <option value="2000">2000</option>
           <option value="2001">2001</option>
           <option value="2002">2002</option>
@@ -249,144 +321,131 @@
           <option value="2043">2043</option>
           <option value="2044">2044</option>
           <option value="2045">2045</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Cost</label>
-        <input type="number" id="cost">
-      </div>
-
-      <div class="form-group">
-        <label>Market Value</label>
-        <input type="number" id="marketValue">
-      </div>
-
-      <div class="form-group">
-        <label>In ZOHO</label>
-        <select id="zoho">
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Driver / Operator</label>
-        <input type="text" id="driver">
-      </div>
-
-      <div class="form-group">
-        <label>Allocation Department</label>
-        <input type="text" id="department">
-      </div>
-
-      <div class="form-group">
-        <label>Tracking Company</label>
-        <select id="trackingCompany">
-          <option value="">Select Tracking Company</option>
-          <option value="Netstar">Netstar</option>
-          <option value="Car Tracker">Car Tracker</option>
-          <option value="The Both(Car Tracker & Netstar)">The Both(Car Tracker & Netstar)</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Installment Amount</label>
-        <input type="number" id="installment">
-      </div>
-
-      <div class="form-group">
-        <label>Insurance</label>
-        <select id="insurance">
-          <option value="">Select Insurance</option>
-          <option value="Outsurance">Outsurance</option>
-          <option value="Auto General">Auto General</option>
-          <option value="Standard Bank">Standard Bank</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Serial No.</label>
-        <input type="text" id="serialNo">
-      </div>
-
-      <div class="form-group">
-        <label>Assert Number <span style="font-weight:normal;color:#666">(optional)</span></label>
-        <input type="text" id="assertNumber" placeholder="Optional assert number">
-      </div>
-
-      <div class="form-group">
-        <label>E-Tags</label>
-        <select id="eTags">
-          <option value="">Select E-Tags</option>
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-        </select>
-      </div>
-
+        </select></div>
+      <div class="form-group"><label>Body Type</label><select id="bodyType"><option value="">Select Body Type</option><option>Sedan</option><option>Hatchback</option><option>Truck</option><option>Minibus</option><option>SUV</option><option>Bukkie</option><option>Lorry</option></select></div>
+      <div class="form-group"><label>Registration no</label><input type="text" id="registrationNo"></div>
+      <div class="form-group"><label>Engine no</label><input type="text" id="engineNo"></div>
+      <div class="form-group"><label>Vin no</label><input type="text" id="vinNo"></div>
+      <div class="form-group"><label>Cost</label><input type="number" id="cost"></div>
+      <div class="form-group"><label>Market Value</label><input type="number" id="marketValue"></div>
+      <div class="form-group"><label>ZOHO</label><select id="zoho"><option value="">Select ZOHO</option><option>Yes</option><option>No</option></select></div>
+      <div class="form-group"><label>Location</label><input type="text" id="location"></div>
+      <div class="form-group"><label>Driver/Operator</label><input type="text" id="driverOperator"></div>
+      <div class="form-group"><label>Licenced</label><select id="licenced"><option value="">Select Licenced</option><option>Yes</option><option>No</option></select></div>
+      <div class="form-group"><label>Type of Licence</label><input type="text" id="typeOfLicence"></div>
+      <div class="form-group"><label>Validity of Licence</label><input type="date" id="validityOfLicence"></div>
+      <div class="form-group"><label>Allocation/Dept</label><input type="text" id="allocationDept"></div>
+      <div class="form-group"><label>Registered Entity</label><input type="text" id="registeredEntity"></div>
+      <div class="form-group"><label>Covered by</label><select id="coveredBy"><option value="">Select Insurance</option><option>Outsurance</option><option>Auto General</option><option>Standard Bank</option><option>Other</option></select></div>
+      <div class="form-group"><label>TRACKING COMPANY</label><select id="trackingCompany"><option value="">Select Tracking Company</option><option>Netstar</option><option>Car Tracker</option><option>The Both(Car Tracker & Netstar)</option></select></div>
+      <div class="form-group"><label>Installment Amount</label><input type="number" id="installmentAmount"></div>
+      <div class="form-group"><label>Last Installment date</label><input type="date" id="lastInstallmentDate"></div>
+      <div class="form-group"><label>eTag Toll</label><select id="eTagToll"><option value="">Select eTag Toll</option><option>Yes</option><option>No</option></select></div>
+      <div class="form-group"><label>NOTES</label><textarea id="notes"></textarea></div>
+      <div class="form-group"><label>Reg. Boo</label><input type="text" id="regBoo"></div>
+      <div class="form-group"><label>Useful life</label><input type="number" id="usefulLife"></div>
+      <div class="form-group"><label>Recharge</label><input type="number" id="recharge"></div>
+      <div class="form-group"><label>Monthly dpn</label><input type="number" id="monthlyDpn"></div>
+      <div class="form-group"><label>Year</label><select id="year"><option value="">Select Year</option>
+          <option value="2000">2000</option>
+          <option value="2001">2001</option>
+          <option value="2002">2002</option>
+          <option value="2003">2003</option>
+          <option value="2004">2004</option>
+          <option value="2005">2005</option>
+          <option value="2006">2006</option>
+          <option value="2007">2007</option>
+          <option value="2008">2008</option>
+          <option value="2009">2009</option>
+          <option value="2010">2010</option>
+          <option value="2011">2011</option>
+          <option value="2012">2012</option>
+          <option value="2013">2013</option>
+          <option value="2014">2014</option>
+          <option value="2015">2015</option>
+          <option value="2016">2016</option>
+          <option value="2017">2017</option>
+          <option value="2018">2018</option>
+          <option value="2019">2019</option>
+          <option value="2020">2020</option>
+          <option value="2021">2021</option>
+          <option value="2022">2022</option>
+          <option value="2023">2023</option>
+          <option value="2024">2024</option>
+          <option value="2025">2025</option>
+          <option value="2026">2026</option>
+          <option value="2027">2027</option>
+          <option value="2028">2028</option>
+          <option value="2029">2029</option>
+          <option value="2030">2030</option>
+          <option value="2031">2031</option>
+          <option value="2032">2032</option>
+          <option value="2033">2033</option>
+          <option value="2034">2034</option>
+          <option value="2035">2035</option>
+          <option value="2036">2036</option>
+          <option value="2037">2037</option>
+          <option value="2038">2038</option>
+          <option value="2039">2039</option>
+          <option value="2040">2040</option>
+          <option value="2041">2041</option>
+          <option value="2042">2042</option>
+          <option value="2043">2043</option>
+          <option value="2044">2044</option>
+          <option value="2045">2045</option>
+        </select></div>
+      <div class="form-group"><label>Months Dpn</label><input type="number" id="monthsDpn"></div>
+      <div class="form-group"><label>Accum dpn</label><input type="number" id="accumDpn"></div>
+      <div class="form-group"><label>NBV</label><input type="number" id="nbv"></div>
+      <div class="form-group"><label>Oustanding VAF</label><input type="number" id="oustandingVaf"></div>
+      <div class="form-group"><label>Value</label><input type="number" id="value"></div>
     </div>
-
     <button type="submit">Save Asset</button>
-
   </form>
 
   <div class="status" id="status"></div>
 
-  <table id="assetTable">
-    <thead>
-      <tr>
-        <th>Asset ID</th>
-        <th>Registration</th>
-        <th>Engine No</th>
-        <th>VIN</th>
-        <th>Make</th>
-        <th>Model</th>
-        <th>Driver</th>
-        <th>Department</th>
-        <th>Cost</th>
-        <th>Market Value</th>
-      </tr>
-    </thead>
-
-    <tbody></tbody>
-
-  </table>
-
+  <div class="table-wrap">
+    <table id="assetTable">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Asset Class</th>
+          <th>Registration no</th>
+          <th>Engine no</th>
+          <th>Vin no</th>
+          <th>Model</th>
+          <th>Body Type</th>
+          <th>Driver/Operator</th>
+          <th>Allocation/Dept</th>
+          <th>Cost</th>
+          <th>Market Value</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 </div>
 
 <script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxBd5q_0l5krjYe5fCxhY3xl8J664W3OgHzPuSafzDblLMLAnNgiKSYnP9xRZeAP9JqNg/exec";
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxwELUoZo8Tfc6DeRtR41pCkocKpN2lVqbko6xVqugQ8zmviaPaTFfAOWXqlFCFrYxHyA/exec";
+const FIELD_IDS = [
+  "code", "assetClass", "purchaseDate", "purchasedBy", "financing", "description",
+  "model", "bodyType", "registrationNo", "engineNo", "vinNo", "cost", "marketValue",
+  "zoho", "location", "driverOperator", "licenced", "typeOfLicence", "validityOfLicence",
+  "allocationDept", "registeredEntity", "coveredBy", "trackingCompany", "installmentAmount",
+  "lastInstallmentDate", "eTagToll", "notes", "regBoo", "usefulLife", "recharge",
+  "monthlyDpn", "year", "monthsDpn", "accumDpn", "nbv", "oustandingVaf", "value"
+];
 
 document.getElementById("assetForm").addEventListener("submit", function(e){
-
   e.preventDefault();
 
-  const data = {
-    assetId: document.getElementById("assetId").value,
-    registration: document.getElementById("registration").value,
-    engineNumber: document.getElementById("engineNumber").value,
-    vinNumber: document.getElementById("vinNumber").value,
-    purchaseDate: document.getElementById("purchaseDate").value,
-    purchasedBy: document.getElementById("purchasedBy").value,
-    description: document.getElementById("description").value,
-    bodyType: document.getElementById("bodyType").value,
-    engine: document.getElementById("engine").value,
-    make: document.getElementById("make").value,
-    model: document.getElementById("model").value,
-    cost: document.getElementById("cost").value,
-    marketValue: document.getElementById("marketValue").value,
-    zoho: document.getElementById("zoho").value,
-    driver: document.getElementById("driver").value,
-    department: document.getElementById("department").value,
-    trackingCompany: document.getElementById("trackingCompany").value,
-    installment: document.getElementById("installment").value,
-    insurance: document.getElementById("insurance").value,
-    serialNo: document.getElementById("serialNo").value,
-    assertNumber: document.getElementById("assertNumber").value,
-    eTags: document.getElementById("eTags").value
-  };
+  const data = {};
+  FIELD_IDS.forEach(function(id){
+    data[id] = document.getElementById(id).value;
+  });
 
   fetch(SCRIPT_URL, {
     method: "POST",
@@ -394,45 +453,36 @@ document.getElementById("assetForm").addEventListener("submit", function(e){
   })
   .then(res => res.json())
   .then(response => {
-
+    if (response.status !== "success") throw new Error(response.message || "Save failed");
     document.getElementById("status").innerHTML = "Asset Saved Successfully";
-
     addToTable(data);
-
     document.getElementById("assetForm").reset();
-
   })
   .catch(err => {
     console.error(err);
     document.getElementById("status").innerHTML = "Error Saving Asset";
   });
-
 });
 
 function addToTable(data){
-
   const tbody = document.querySelector("#assetTable tbody");
-
   const row = `
     <tr>
-      <td>${data.assetId}</td>
-      <td>${data.registration}</td>
-      <td>${data.engineNumber}</td>
-      <td>${data.vinNumber}</td>
-      <td>${data.make || ""}</td>
-      <td>${data.model}</td>
-      <td>${data.driver}</td>
-      <td>${data.department}</td>
-      <td>${data.cost}</td>
-      <td>${data.marketValue}</td>
+      <td>${data.code || ""}</td>
+      <td>${data.assetClass || ""}</td>
+      <td>${data.registrationNo || ""}</td>
+      <td>${data.engineNo || ""}</td>
+      <td>${data.vinNo || ""}</td>
+      <td>${data.model || ""}</td>
+      <td>${data.bodyType || ""}</td>
+      <td>${data.driverOperator || ""}</td>
+      <td>${data.allocationDept || ""}</td>
+      <td>${data.cost || ""}</td>
+      <td>${data.marketValue || ""}</td>
     </tr>
   `;
-
   tbody.innerHTML += row;
-
 }
-
 </script>
-
 </body>
 </html>

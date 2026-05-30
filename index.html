@@ -168,7 +168,16 @@
 
       <div class="form-group">
         <label>Body Type</label>
-        <input type="text" id="bodyType">
+        <select id="bodyType">
+          <option value="">Select Body Type</option>
+          <option value="Sedan">Sedan</option>
+          <option value="Hatchback">Hatchback</option>
+          <option value="Truck">Truck</option>
+          <option value="Minibus">Minibus</option>
+          <option value="SUV">SUV</option>
+          <option value="Bukkie">Bukkie</option>
+          <option value="Lorry">Lorry</option>
+        </select>
       </div>
 
       <div class="form-group">
@@ -177,8 +186,70 @@
       </div>
 
       <div class="form-group">
+        <label>Make</label>
+        <select id="make">
+          <option value="">Select Make</option>
+          <option value="Toyota">Toyota</option>
+          <option value="Ford">Ford</option>
+          <option value="Foton">Foton</option>
+          <option value="Mahindra">Mahindra</option>
+          <option value="Issuzu">Issuzu</option>
+          <option value="Mercedes Benz">Mercedes Benz</option>
+          <option value="Nissan">Nissan</option>
+        </select>
+      </div>
+
+      <div class="form-group">
         <label>Model</label>
-        <input type="text" id="model">
+        <select id="model">
+          <option value="">Select Model Year</option>
+          <option value="2000">2000</option>
+          <option value="2001">2001</option>
+          <option value="2002">2002</option>
+          <option value="2003">2003</option>
+          <option value="2004">2004</option>
+          <option value="2005">2005</option>
+          <option value="2006">2006</option>
+          <option value="2007">2007</option>
+          <option value="2008">2008</option>
+          <option value="2009">2009</option>
+          <option value="2010">2010</option>
+          <option value="2011">2011</option>
+          <option value="2012">2012</option>
+          <option value="2013">2013</option>
+          <option value="2014">2014</option>
+          <option value="2015">2015</option>
+          <option value="2016">2016</option>
+          <option value="2017">2017</option>
+          <option value="2018">2018</option>
+          <option value="2019">2019</option>
+          <option value="2020">2020</option>
+          <option value="2021">2021</option>
+          <option value="2022">2022</option>
+          <option value="2023">2023</option>
+          <option value="2024">2024</option>
+          <option value="2025">2025</option>
+          <option value="2026">2026</option>
+          <option value="2027">2027</option>
+          <option value="2028">2028</option>
+          <option value="2029">2029</option>
+          <option value="2030">2030</option>
+          <option value="2031">2031</option>
+          <option value="2032">2032</option>
+          <option value="2033">2033</option>
+          <option value="2034">2034</option>
+          <option value="2035">2035</option>
+          <option value="2036">2036</option>
+          <option value="2037">2037</option>
+          <option value="2038">2038</option>
+          <option value="2039">2039</option>
+          <option value="2040">2040</option>
+          <option value="2041">2041</option>
+          <option value="2042">2042</option>
+          <option value="2043">2043</option>
+          <option value="2044">2044</option>
+          <option value="2045">2045</option>
+        </select>
       </div>
 
       <div class="form-group">
@@ -211,12 +282,47 @@
 
       <div class="form-group">
         <label>Tracking Company</label>
-        <input type="text" id="trackingCompany">
+        <select id="trackingCompany">
+          <option value="">Select Tracking Company</option>
+          <option value="Netstar">Netstar</option>
+          <option value="Car Tracker">Car Tracker</option>
+          <option value="The Both(Car Tracker & Netstar)">The Both(Car Tracker & Netstar)</option>
+        </select>
       </div>
 
       <div class="form-group">
         <label>Installment Amount</label>
         <input type="number" id="installment">
+      </div>
+
+      <div class="form-group">
+        <label>Insurance</label>
+        <select id="insurance">
+          <option value="">Select Insurance</option>
+          <option value="Outsurance">Outsurance</option>
+          <option value="Auto General">Auto General</option>
+          <option value="Standard Bank">Standard Bank</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Serial No.</label>
+        <input type="text" id="serialNo">
+      </div>
+
+      <div class="form-group">
+        <label>Assert Number <span style="font-weight:normal;color:#666">(optional)</span></label>
+        <input type="text" id="assertNumber" placeholder="Optional assert number">
+      </div>
+
+      <div class="form-group">
+        <label>E-Tags</label>
+        <select id="eTags">
+          <option value="">Select E-Tags</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
       </div>
 
     </div>
@@ -234,6 +340,7 @@
         <th>Registration</th>
         <th>Engine No</th>
         <th>VIN</th>
+        <th>Make</th>
         <th>Model</th>
         <th>Driver</th>
         <th>Department</th>
@@ -250,7 +357,7 @@
 
 <script>
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxjoP2h__AIXTutbsME8sWKgNYXDZaZ7o0VRudoIizaWHmXPXpgWw7Gy-UTfnTAy7lU/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxwELUoZo8Tfc6DeRtR41pCkocKpN2lVqbko6xVqugQ8zmviaPaTFfAOWXqlFCFrYxHyA/exec";
 
 document.getElementById("assetForm").addEventListener("submit", function(e){
 
@@ -266,6 +373,7 @@ document.getElementById("assetForm").addEventListener("submit", function(e){
     description: document.getElementById("description").value,
     bodyType: document.getElementById("bodyType").value,
     engine: document.getElementById("engine").value,
+    make: document.getElementById("make").value,
     model: document.getElementById("model").value,
     cost: document.getElementById("cost").value,
     marketValue: document.getElementById("marketValue").value,
@@ -273,7 +381,11 @@ document.getElementById("assetForm").addEventListener("submit", function(e){
     driver: document.getElementById("driver").value,
     department: document.getElementById("department").value,
     trackingCompany: document.getElementById("trackingCompany").value,
-    installment: document.getElementById("installment").value
+    installment: document.getElementById("installment").value,
+    insurance: document.getElementById("insurance").value,
+    serialNo: document.getElementById("serialNo").value,
+    assertNumber: document.getElementById("assertNumber").value,
+    eTags: document.getElementById("eTags").value
   };
 
   fetch(SCRIPT_URL, {
@@ -307,6 +419,7 @@ function addToTable(data){
       <td>${data.registration}</td>
       <td>${data.engineNumber}</td>
       <td>${data.vinNumber}</td>
+      <td>${data.make || ""}</td>
       <td>${data.model}</td>
       <td>${data.driver}</td>
       <td>${data.department}</td>
